@@ -7,7 +7,11 @@ router.get('/', async (req, res) => {
   const courses = await Course.find()
     .populate('userId', 'email name')
     
-  res.render('courses', {pageTitle: 'Courses page', isCourses: true, courses})
+  res.render('courses', {
+    pageTitle: 'Courses page', 
+    isCourses: true, 
+    courses
+  })
 })
 
 router.get('/:id/edit', auth, async (req, res) => {

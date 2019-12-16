@@ -2,6 +2,8 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 
 const path = require('path')
+const csrf = require('csurf')
+const flash = require('connect-flash')
 
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -17,7 +19,6 @@ const authRoutes = require('./routes/auth')
 
 const MONGODB_URI = 'mongodb+srv://sotnikov_k:OP1imCvCqLmcrQri@mongovue-voe6y.mongodb.net/trainingVladilenSession?retryWrites=true&w=majority'
 
-// const User = require('./models/user')
 
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
@@ -56,6 +57,8 @@ app.use(session({
   saveUninitialized: false,
   store
 }))
+app.use(csrf())
+app.use(flash())
 app.use(varMiddleware)
 app.use(userMiddleware)
 
@@ -72,7 +75,8 @@ async function start() {
   try {
     await mongoose.connect(MONGODB_URI, {
       useFindAndModify: false,
-      useNewUrlParser: true
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     })
     // const candidate = await User.findOne()
     // if(!candidate){
